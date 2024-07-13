@@ -11,7 +11,7 @@ interface users {
   email: string;
   telefone: string;
   endereco: string;
-  ativo: boolean;
+  ativo: boolean | string ;
 }
 
 @Component({
@@ -22,48 +22,7 @@ interface users {
 export class AppComponent {
   title = 'UserManagerNG';
 
-  users: users[] = [
-    {
-        "nome": "João Silva",
-        "username": "joaosilva",
-        "email": "joao.silva@example.com",
-        "telefone": "(11) 1234-5678",
-        "endereco": "Rua das Flores, 123, São Paulo, SP",
-        "ativo": true
-    },
-    {
-        "nome": "Maria Oliveira",
-        "username": "mariaoliveira",
-        "email": "maria.oliveira@example.com",
-        "telefone": "(21) 2345-6789",
-        "endereco": "Av. Brasil, 456, Rio de Janeiro, RJ",
-        "ativo": false
-    },
-    {
-        "nome": "Carlos Souza",
-        "username": "carlossouza",
-        "email": "carlos.souza@example.com",
-        "telefone": "(31) 3456-7890",
-        "endereco": "Rua Minas Gerais, 789, Belo Horizonte, MG",
-        "ativo": true
-    },
-    {
-        "nome": "Ana Costa",
-        "username": "anacosta",
-        "email": "ana.costa@example.com",
-        "telefone": "(41) 4567-8901",
-        "endereco": "Rua Paraná, 101, Curitiba, PR",
-        "ativo": false
-    },
-    {
-        "nome": "Pedro Martins",
-        "username": "pedromartins",
-        "email": "pedro.martins@example.com",
-        "telefone": "(51) 5678-9012",
-        "endereco": "Av. Ipiranga, 202, Porto Alegre, RS",
-        "ativo": true
-    }
-];
+  users!: users[]
 
   cols: Column[] = [
     { field: 'nome', header: 'NOME' },
@@ -76,7 +35,55 @@ export class AppComponent {
 
   false = false;
 
-  showDialogDelete = false
+  showDialogDelete = false;
+
+  ngOnInit() {
+    this.users = [
+      {
+          "nome": "João Silva",
+          "username": "joaosilva",
+          "email": "joao.silva@example.com",
+          "telefone": "(11) 1234-5678",
+          "endereco": "Rua das Flores, 123, São Paulo, SP",
+          "ativo": true
+      },
+      {
+          "nome": "Maria Oliveira",
+          "username": "mariaoliveira",
+          "email": "maria.oliveira@example.com",
+          "telefone": "(21) 2345-6789",
+          "endereco": "Av. Brasil, 456, Rio de Janeiro, RJ",
+          "ativo": false
+      },
+      {
+          "nome": "Carlos Souza",
+          "username": "carlossouza",
+          "email": "carlos.souza@example.com",
+          "telefone": "(31) 3456-7890",
+          "endereco": "Rua Minas Gerais, 789, Belo Horizonte, MG",
+          "ativo": true
+      },
+      {
+          "nome": "Ana Costa",
+          "username": "anacosta",
+          "email": "ana.costa@example.com",
+          "telefone": "(41) 4567-8901",
+          "endereco": "Rua Paraná, 101, Curitiba, PR",
+          "ativo": false
+      },
+      {
+          "nome": "Pedro Martins",
+          "username": "pedromartins",
+          "email": "pedro.martins@example.com",
+          "telefone": "(51) 5678-9012",
+          "endereco": "Av. Ipiranga, 202, Porto Alegre, RS",
+          "ativo": true
+      }
+    ]
+    this.users.forEach( user =>{
+      user.ativo = this.isAtivo(user.ativo)
+    })
+  }
 
   showDialog() {
     this.showDialogDelete = true;
@@ -84,5 +91,9 @@ export class AppComponent {
 
   deleteUser(){
     this.showDialogDelete = false;
+  }
+
+  isAtivo(ativo: boolean | string){
+    return ativo ? 'ATIVO' : 'INATIVO'
   }
 }
