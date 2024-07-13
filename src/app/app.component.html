@@ -1,5 +1,5 @@
 <p-button (onClick)="showDialog()" label="Show" />
 <!-- table  -->
 <!-- <app-register-form></app-register-form> -->
-  <app-confirm-delete [visible]="visible"></app-confirm-delete>
+  <app-confirm-delete [visible]="showDialogDelete" (onHide)="showDialogDelete = false" (confirm)="deleteUser()"></app-confirm-delete>
 

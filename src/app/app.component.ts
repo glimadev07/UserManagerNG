@@ -10,10 +10,14 @@ export class AppComponent {
 
   false = false;
 
-  visible = false
+  showDialogDelete = false
 
   showDialog() {
-    this.visible = true;
-}
+    this.showDialogDelete = true;
+  }
 
+  deleteUser(){
+    console.log("deletado");
+    this.showDialogDelete = false;
+  }
 }
