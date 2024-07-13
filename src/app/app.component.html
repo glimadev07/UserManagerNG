@@ -1,6 +1,4 @@
-<!-- <p-button (onClick)="showDelete()" label="Show" /> -->
-<p-button (onClick)="showUserForm()" label="Cadastrar" />
-
+<p-button (onClick)="showRegisterUser()" label="Cadastrar" />
 <p-table [columns]="cols" [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="header" let-columns>
       <tr>
@@ -15,13 +13,14 @@
               <span *ngIf="col.field !== 'operacoes'">{{ rowData[col.field] }}</span>
               <span *ngIf="col.field == 'operacoes'">
                 <p-button (onClick)="showDelete(rowData)" icon="pi pi-trash" />
-                <p-button (onClick)="showUserForm(rowData)" icon="pi pi-user-edit" />
+                <p-button (onClick)="showUpdateUser(rowData)" icon="pi pi-user-edit" />
               </span>
           </td>
       </tr>
   </ng-template>
 </p-table>
 
-<app-register-form [visible]="showDialogUserForm" (onHide)="showDialogUserForm = false" (confirm)="saveOrUpdate()"></app-register-form>
-  <app-confirm-delete [visible]="showDialogDelete" (onHide)="showDialogDelete = false" (confirm)="deleteUser()"></app-confirm-delete>
+<app-register-form [visible]="showDialogResgiter" (onHide)="showDialogResgiter = false;" (confirm)="registerUser()"></app-register-form>
+<app-register-form [visible]="showDialogUpdate" (onHide)="showDialogUpdate = false;" (confirm)="updateUser()" [user]="userUpdate"></app-register-form>
+<app-confirm-delete [visible]="showDialogDelete" (onHide)="showDialogDelete = false" (confirm)="deleteUser()"></app-confirm-delete>
 

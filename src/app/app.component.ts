@@ -37,8 +37,10 @@ export class AppComponent {
 
   false = false;
 
+  showDialogResgiter = false;
+  showDialogUpdate = false;
   showDialogDelete = false;
-  showDialogUserForm = false;
+  userUpdate!: user;
 
   ngOnInit() {
     this.users = [
@@ -92,16 +94,26 @@ export class AppComponent {
     this.showDialogDelete = true;
   }
 
-  showUserForm(user?: user) {
-    this.showDialogUserForm = true;
+  showUpdateUser(user: user) {
+    this.showDialogUpdate = true;
+    this.userUpdate = user;
   }
 
+  showRegisterUser() {
+    this.showDialogResgiter = true;
+  }
 
   deleteUser(){
     this.showDialogDelete = false;
   }
 
-  saveOrUpdate(){}
+  registerUser(){
+    this.showDialogResgiter = false;
+  }
+
+  updateUser(){
+    this.showDialogUpdate = false;
+  }
 
   isAtivo(ativo: boolean | string){
     return ativo ? 'ATIVO' : 'INATIVO'
