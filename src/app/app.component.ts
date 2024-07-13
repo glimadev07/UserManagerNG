@@ -5,7 +5,7 @@ interface Column {
   header: string;
 }
 
-interface users {
+export interface user {
   nome: string;
   username: string;
   email: string;
@@ -22,7 +22,7 @@ interface users {
 export class AppComponent {
   title = 'UserManagerNG';
 
-  users!: users[]
+  users!: user[]
 
   cols: Column[] = [
     { field: 'nome', header: 'NOME' },
@@ -36,6 +36,7 @@ export class AppComponent {
   false = false;
 
   showDialogDelete = false;
+  showDialogUserForm = false;
 
   ngOnInit() {
     this.users = [
@@ -85,13 +86,20 @@ export class AppComponent {
     })
   }
 
-  showDialog() {
+  showDelete() {
     this.showDialogDelete = true;
   }
+
+  showUserForm() {
+    this.showDialogUserForm = true;
+  }
+
 
   deleteUser(){
     this.showDialogDelete = false;
   }
+
+  saveOrUpdate(){}
 
   isAtivo(ativo: boolean | string){
     return ativo ? 'ATIVO' : 'INATIVO'

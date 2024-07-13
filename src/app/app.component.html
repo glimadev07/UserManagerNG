@@ -1,4 +1,5 @@
-<p-button (onClick)="showDialog()" label="Show" />
+<!-- <p-button (onClick)="showDelete()" label="Show" /> -->
+<p-button (onClick)="showUserForm()" label="Cadastrar" />
 
 <p-table [columns]="cols" [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="header" let-columns>
@@ -17,6 +18,6 @@
   </ng-template>
 </p-table>
 
-<!-- <app-register-form></app-register-form> -->
+<app-register-form [visible]="showDialogUserForm" (onHide)="showDialogUserForm = false" (confirm)="saveOrUpdate()"></app-register-form>
   <app-confirm-delete [visible]="showDialogDelete" (onHide)="showDialogDelete = false" (confirm)="deleteUser()"></app-confirm-delete>
 
