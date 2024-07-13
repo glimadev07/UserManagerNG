@@ -11,6 +11,7 @@ import { ConfirmDeleteComponent } from '../components/confirm-delete/confirm-del
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { TableModule } from 'primeng/table';
     BrowserAnimationsModule,
     ButtonModule,
     DialogModule,
-    TableModule
+    TableModule,
+    CardModule
 
   ],
   providers: [

@@ -1,0 +1,93 @@
+
+p-card,
+.p-card {
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0%;
+}
+
+.p-card .p-card-body {
+  padding: 0 !important;
+}
+
+.register-button{
+  display: flex;
+  justify-content: end;
+  padding-bottom: 20px;
+}
+
+.operation-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+::ng-deep app-root{
+  .p-datatable .p-datatable-thead > tr > th {
+    text-align: left;
+    padding: 1rem;
+    border-style: solid;
+    border-color: #8c92a0;
+    border-width: 1px 1px 1px 1px;
+    font-weight: 500;
+    color: #343a43;
+    background: rgb(204 208 212);
+    transition: box-shadow 0.2s ease 0s;
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td {
+    text-align: left;
+    text-transform: uppercase;
+    border: 0.5px solid #dce2ec;
+    border-width: 0.5px 0.5px 0.5px 0.5px;
+    padding: 1rem 1rem;
+  }
+
+  .p-datatable .p-datatable-tbody > tr {
+    background: rgb(255, 255, 255);
+    color: rgb(69 109 165);
+    transition: box-shadow 0.2s ease 0s;
+  }
+
+  .p-button {
+    color: #ffffff;
+    background: #626b79;
+    border: #626b79;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 6px;
+    outline-color: transparent;
+  }
+
+  .table-button{
+    .p-button {
+      color: #ffffff;
+      background: #4c5f74;
+      border: #626b79;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      border-radius: none;
+      outline-color: transparent;
+      align-content: center;
+      text-align: center;
+    }
+  }
+  .p-button.p-button-icon-only {
+    width: 4rem;
+  }
+
+  .p-dialog .p-dialog-header .p-dialog-header-icon {
+    width: 2rem;
+    height: 2rem;
+    color: #6b7280;
+    border: 0 none;
+    background: transparent !important;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+    margin-right: 0.5rem;
+}
+
+}
