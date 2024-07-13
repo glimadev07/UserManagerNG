@@ -6,10 +6,11 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RegisterFormComponent } from '../components/register-form/register-form.component';
+import { ConfirmDeleteComponent } from '../components/confirm-delete/confirm-delete.component';
 
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDeleteComponent } from '../components/confirm-delete/confirm-delete.component';
 import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { DialogModule } from 'primeng/dialog';
     AppRoutingModule,
     BrowserAnimationsModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    TableModule
 
   ],
   providers: [
