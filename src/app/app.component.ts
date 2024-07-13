@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { log } from 'console';
 
 interface Column {
   field: string;
@@ -30,7 +31,8 @@ export class AppComponent {
     { field: 'email', header: 'EMAIL' },
     { field: 'telefone', header: 'CONTATO' },
     { field: 'endereco', header: 'ENDEREÇO' },
-    { field: 'ativo', header: 'ATIVO' }
+    { field: 'ativo', header: 'ATIVO' },
+    { field: 'operacoes', header: 'OPERAÇÕES'}
 ];
 
   false = false;
@@ -86,11 +88,11 @@ export class AppComponent {
     })
   }
 
-  showDelete() {
+  showDelete(user: user) {
     this.showDialogDelete = true;
   }
 
-  showUserForm() {
+  showUserForm(user?: user) {
     this.showDialogUserForm = true;
   }
 

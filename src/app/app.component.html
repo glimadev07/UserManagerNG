@@ -12,7 +12,11 @@
   <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
           <td *ngFor="let col of columns">
-              {{ rowData[col.field] }}
+              <span *ngIf="col.field !== 'operacoes'">{{ rowData[col.field] }}</span>
+              <span *ngIf="col.field == 'operacoes'">
+                <p-button (onClick)="showDelete(rowData)" icon="pi pi-trash" />
+                <p-button (onClick)="showUserForm(rowData)" icon="pi pi-user-edit" />
+              </span>
           </td>
       </tr>
   </ng-template>
