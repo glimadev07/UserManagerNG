@@ -9,7 +9,7 @@ import { RegisterFormComponent } from '../components/register-form/register-form
 
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDeleteComponent } from '../components/confirm-delete/confirm-delete.component';
-
+import { DialogModule } from 'primeng/dialog';
 
 
 @NgModule({
@@ -22,7 +22,9 @@ import { ConfirmDeleteComponent } from '../components/confirm-delete/confirm-del
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ButtonModule
+    ButtonModule,
+    DialogModule
+
   ],
   providers: [
     provideClientHydration(),

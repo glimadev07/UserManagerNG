@@ -9,4 +9,11 @@ export class AppComponent {
   title = 'UserManagerNG';
 
   false = false;
+
+  visible = false
+
+  showDialog() {
+    this.visible = true;
+}
+
 }
