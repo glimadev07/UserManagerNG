@@ -1,5 +1,8 @@
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { UserService } from './service/user.service';
 import { Component } from '@angular/core';
 import { FormBuilder, UntypedFormGroup } from '@angular/forms';
+import { bootstrapApplication } from '@angular/platform-browser';
 
 interface Column {
   field: string;
@@ -20,7 +23,11 @@ export interface user {
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
+
+
+
 export class AppComponent {
+
   title = 'UserManagerNG';
 
   users!: user[]
@@ -44,58 +51,13 @@ export class AppComponent {
   showDialogDelete = false;
   userUpdate!: user;
 
-  ngOnInit() {
-    this.users = [
-      {
-          "nome": "João Silva",
-          "username": "joaosilva",
-          "email": "joao.silva@example.com",
-          "telefone": "(11) 1234-5678",
-          "endereco": "Rua das Flores, 123, São Paulo, SP",
-          "ativo": true
-      },
-      {
-          "nome": "Maria Oliveira",
-          "username": "mariaoliveira",
-          "email": "maria.oliveira@example.com",
-          "telefone": "(21) 2345-6789",
-          "endereco": "Av. Brasil, 456, Rio de Janeiro, RJ",
-          "ativo": false
-      },
-      {
-          "nome": "Carlos Souza",
-          "username": "carlossouza",
-          "email": "carlos.souza@example.com",
-          "telefone": "(31) 3456-7890",
-          "endereco": "Rua Minas Gerais, 789, Belo Horizonte, MG",
-          "ativo": true
-      },
-      {
-          "nome": "Ana Costa",
-          "username": "anacosta",
-          "email": "ana.costa@example.com",
-          "telefone": "(41) 4567-8901",
-          "endereco": "Rua Paraná, 101, Curitiba, PR",
-          "ativo": false
-      },
-      {
-          "nome": "Pedro Martins",
-          "username": "pedromartins",
-          "email": "pedro.martins@example.com",
-          "telefone": "(51) 5678-9012",
-          "endereco": "Av. Ipiranga, 202, Porto Alegre, RS",
-          "ativo": true
-      }
-    ]
-    this.users.forEach( user =>{
-      user.ativo = this.isAtivo(user.ativo)
-    })
+  constructor(private userService: UserService){
+
   }
 
-
-
-
-
+  ngOnInit() {
+    this.getUsers();
+  }
 
   showDelete(user: user) {
     this.showDialogDelete = true;
@@ -114,9 +76,8 @@ export class AppComponent {
     this.showDialogDelete = false;
   }
 
-  registerUser(event: any){
-    console.log(event);
-
+  registerUser(user: any){
+    this.createUser(user);
     this.showDialogResgiter = false;
   }
 
@@ -129,4 +90,26 @@ export class AppComponent {
   isAtivo(ativo: boolean | string){
     return ativo ? 'ATIVO' : 'INATIVO'
   }
+  getUsers(){
+    this.userService.getUsers().subscribe(res => {
+      this.users = res.data;
+      this.users.forEach( user =>{
+        user.ativo = this.isAtivo(user.ativo)
+      })
+    }, error => {
+      console.error('There was an error!', error);
+    });
+  }
+
+  createUser(user: any) {
+    this.userService.createUser(user).subscribe(
+      response => {
+        console.log('User created successfully:', response);
+      },
+      error => {
+        console.error('There was an error!', error);
+      }
+    );
+  }
+
 }

@@ -29,15 +29,19 @@
     <label for="email">Email:</label>
     <input id="email" type="text" pInputText formControlName="email" />
   </div>
+  <div class="field">
+    <p-checkbox
+    [(ngModel)]="isMaster"
+    [binary]="true"
+    label="administrador"/>
+  </div>
 </form>
   <ng-template pTemplate="footer">
     <div class="button-footer">
       <div class="confirm-button">
         <p-button label="Salvar" (onClick)="confirmButton()" [outlined]="true" />
-
       </div>
       <div>
-
         <p-button label="Cancelar" (onClick)="visible = false" />
       </div>
     </div>

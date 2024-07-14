@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { user } from '../../app/app.component';
 import { FormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UserService } from '../../app/service/user.service';
 
 @Component({
   selector: 'app-register-form',
@@ -18,8 +19,9 @@ export class RegisterFormComponent implements OnInit {
 
 
   userForm!: UntypedFormGroup;
+  isMaster = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private userService: UserService) {
 
   }
 
@@ -40,7 +42,9 @@ export class RegisterFormComponent implements OnInit {
   }
 
   confirmButton(){
-    this.confirm.emit(this.userForm.value);
+    const objToSend = this.userForm.getRawValue()
+    objToSend.isMaster = this.isMaster
+    this.confirm.emit(objToSend);
   }
 
   private initForm(){
@@ -53,7 +57,7 @@ export class RegisterFormComponent implements OnInit {
       endereco: [''],
       senha: [''],
       confirmarSenha: [''],
+      isMaster: [this.isMaster]
     });
   }
-
 }
