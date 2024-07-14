@@ -32,7 +32,7 @@ p-card,
     border-width: 1px 1px 1px 1px;
     font-weight: 500;
     color: #343a43;
-    background: rgb(204 208 212);
+    background: #ccd0d4;
     transition: box-shadow 0.2s ease 0s;
   }
 
@@ -59,6 +59,7 @@ p-card,
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     border-radius: 6px;
     outline-color: transparent;
+    cursor: pointer;
   }
 
   .table-button{
@@ -89,5 +90,25 @@ p-card,
     transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
     margin-right: 0.5rem;
 }
+
+  .p-dialog .p-dialog-header {
+    border-bottom: 0 none;
+    background: #ccd0d4;
+    color: #374151;
+    padding: 0.5rem;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+  }
+
+  .p-dialog .p-dialog-content {
+    background: #ffffff;
+    color: #4b5563;
+    padding: 2rem 1.5rem 2rem 1.5rem;
+}
+
+  .button-footer{
+    display: flex;
+    justify-content: center;
+  }
 
 }

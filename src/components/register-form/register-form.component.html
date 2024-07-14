@@ -1,14 +1,16 @@
 <p-dialog [header]="user ? 'ATUALIZAR USUÁRIO' : 'CRIAR USUÁRIO'" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem', height: '200px' }" [draggable]="false" [resizable]="false" (onHide)="hideModal()">
   <span>form</span>
-  <div>
-    <div class="confirm-button">
-      <p-button label="Salvar" severity="info" (onClick)="confirmButton()" [outlined]="true" />
+  <ng-template pTemplate="footer">
+    <div class="button-footer">
+      <div class="confirm-button">
+        <p-button label="Salvar" (onClick)="confirmButton()" [outlined]="true" />
 
-    </div>
-    <div>
+      </div>
+      <div>
 
-      <p-button label="Cancelar" (onClick)="visible = false" />
+        <p-button label="Cancelar" (onClick)="visible = false" />
+      </div>
     </div>
-  </div>
+  </ng-template>
 </p-dialog>
 
