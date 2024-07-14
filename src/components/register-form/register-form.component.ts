@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { user } from '../../app/app.component';
+import { FormBuilder, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-register-form',
@@ -16,19 +17,43 @@ export class RegisterFormComponent implements OnInit {
   @Output() confirm: EventEmitter<void> = new EventEmitter();
 
 
+  userForm!: UntypedFormGroup;
 
+  constructor(private fb: FormBuilder) {
 
-  constructor() { }
+  }
 
   ngOnInit() {
+    this.initForm();
+
+  }
+
+  isUptade(){
+    if(this.user){
+      this.userForm.patchValue(this.user)
+    }
   }
 
   hideModal(){
     this.onHide.emit();
+    this.userForm.reset();
   }
 
   confirmButton(){
-    this.confirm.emit();
+    this.confirm.emit(this.userForm.value);
+  }
+
+  private initForm(){
+    this.userForm = this.fb.group({
+      nome: [''],
+      username: [''],
+      email: [''],
+      ativo: [''],
+      telefone: [''],
+      endereco: [''],
+      senha: [''],
+      confirmarSenha: [''],
+    });
   }
 
 }

@@ -1,5 +1,35 @@
-<p-dialog [header]="user ? 'ATUALIZAR USUÁRIO' : 'CRIAR USUÁRIO'" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem', height: '200px' }" [draggable]="false" [resizable]="false" (onHide)="hideModal()">
-  <span>form</span>
+<p-dialog [header]="user ? 'ATUALIZAR USUÁRIO' : 'CRIAR USUÁRIO'" [modal]="true" [(visible)]="visible" [style]="{ width: '600px', height: '500px' }"
+[draggable]="false" [resizable]="false" (onHide)="hideModal()" (onShow)="isUptade()">
+<form [formGroup]="userForm" class="p-fluid grid formgrid">
+  <div class="field col-12 md:col-6">
+    <label for="nome">Nome:</label>
+    <input id="nome" type="text" pInputText formControlName="nome" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label for="username">Username:</label>
+    <input id="username" type="text" pInputText formControlName="username" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label for="telefone">Contato:</label>
+    <input id="telefone" type="text" pInputText formControlName="telefone" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label for="endereco">Endereço:</label>
+    <input id="endereco" type="text" pInputText formControlName="endereco" />
+  </div>
+  <div class="field col-12 md:col-6" *ngIf="!user">
+    <label for="senha">Senha:</label>
+    <input id="senha" type="password" pInputText formControlName="senha" />
+  </div>
+  <div class="field col-12 md:col-6" *ngIf="!user">
+    <label for="confirmarSenha">Confirmar Senha:</label>
+    <input id="confirmarSenha" type="password" pInputText formControlName="confirmarSenha" />
+  </div>
+  <div class="field col-12">
+    <label for="email">Email:</label>
+    <input id="email" type="text" pInputText formControlName="email" />
+  </div>
+</form>
   <ng-template pTemplate="footer">
     <div class="button-footer">
       <div class="confirm-button">

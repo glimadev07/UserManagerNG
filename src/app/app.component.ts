@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, UntypedFormGroup } from '@angular/forms';
 
 interface Column {
   field: string;
@@ -23,6 +24,8 @@ export class AppComponent {
   title = 'UserManagerNG';
 
   users!: user[]
+
+
 
   cols: Column[] = [
     { field: 'nome', header: 'NOME' },
@@ -89,6 +92,11 @@ export class AppComponent {
     })
   }
 
+
+
+
+
+
   showDelete(user: user) {
     this.showDialogDelete = true;
   }
@@ -106,11 +114,15 @@ export class AppComponent {
     this.showDialogDelete = false;
   }
 
-  registerUser(){
+  registerUser(event: any){
+    console.log(event);
+
     this.showDialogResgiter = false;
   }
 
-  updateUser(){
+  updateUser(event: any){
+    console.log(event);
+
     this.showDialogUpdate = false;
   }
 
