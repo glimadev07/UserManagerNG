@@ -21,13 +21,16 @@ import { UserComponent } from './user/user.component';
 import { provideHttpClient, withFetch, HttpClientModule } from '@angular/common/http';
 import { PaginatorModule } from 'primeng/paginator';
 
+import { NotificationComponent } from '../components/notification/notification.component'; // Adicione esta linha
+
 @NgModule({
   declarations: [
     AppComponent,
     RegisterFormComponent,
     ConfirmDeleteComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    NotificationComponent // Adicione esta linha
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,6 @@ import { PaginatorModule } from 'primeng/paginator';
     CheckboxModule,
     FormsModule,
     PaginatorModule
-
   ],
   providers: [
     provideClientHydration(),

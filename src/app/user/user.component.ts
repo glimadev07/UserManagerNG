@@ -5,6 +5,7 @@ import { UserService } from '../service/user.service';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
+import { NotificationService } from '../service/notification.service';
 
 @Component({
   selector: 'app-user',
@@ -35,7 +36,12 @@ export class UserComponent implements OnInit {
   showDialogDelete = false;
   userUpdate!: User;
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit() {
     this.loadUsers({ first: 0, rows: this.rows });
@@ -83,6 +89,7 @@ export class UserComponent implements OnInit {
       this.userService.deleteUser(this.userToDelete.id).subscribe({
         next: () => {
           console.log('Usuário excluído com sucesso');
+          this.notificationService.notify('Usuário excluído com sucesso'); // Notificar sucesso
           this.loadUsers({ first: 0, rows: this.rows }); // Recarregar usuários após exclusão
           this.showDialogDelete = false;
           this.userToDelete = null;
