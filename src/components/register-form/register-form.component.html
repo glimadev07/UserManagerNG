@@ -1,5 +1,6 @@
+<!-- src/app/register-form/register-form.component.html -->
 <p-dialog [header]="user ? 'ATUALIZAR USUÁRIO' : 'CRIAR USUÁRIO'" [modal]="true" [(visible)]="visible" [style]="{ width: '600px', height: '500px' }"
-[draggable]="false" [resizable]="false" (onHide)="hideModal()" (onShow)="isUptade()">
+[draggable]="false" [resizable]="false" (onHide)="hideModal()" (onShow)="isUpdate()">
 <form [formGroup]="userForm" class="p-fluid grid formgrid">
   <div class="field col-12 md:col-6">
     <label for="nome">Nome:</label>
@@ -29,28 +30,21 @@
     <label for="email">Email:</label>
     <input id="email" type="text" pInputText formControlName="email" />
   </div>
-  <div class="field">
-    <p-checkbox
-    [(ngModel)]="isMaster"
-    [binary]="true"
-    label="administrador"/>
+  <div class="field col-12">
+    <p-checkbox formControlName="isMaster" [binary]="true" label="Administrador"></p-checkbox>
   </div>
-  <div class="field">
-    <p-checkbox
-    [(ngModel)]="isAtivo"
-    [binary]="true"
-    label="Ativo"/>
+  <div class="field col-12">
+    <p-checkbox formControlName="ativo" [binary]="true" label="Ativo"></p-checkbox>
   </div>
 </form>
-  <ng-template pTemplate="footer">
-    <div class="button-footer">
-      <div class="confirm-button">
-        <p-button label="Salvar" (onClick)="confirmButton()" [outlined]="true" />
-      </div>
-      <div>
-        <p-button label="Cancelar" (onClick)="visible = false" />
-      </div>
+<ng-template pTemplate="footer">
+  <div class="button-footer">
+    <div class="confirm-button">
+      <p-button label="Salvar" (onClick)="confirmButton()" [outlined]="true"></p-button>
     </div>
-  </ng-template>
+    <div>
+      <p-button label="Cancelar" (onClick)="visible = false"></p-button>
+    </div>
+  </div>
+</ng-template>
 </p-dialog>
-

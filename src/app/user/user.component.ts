@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Column } from './model/Column.model';
-import { user } from '../app.component';
-import { UserService } from '../service/user.service';
 import { User } from './model/user.model';
-import { AuthService } from '../auth/auth.service';  // Importe o AuthService
-import { Router } from '@angular/router';  // Importe o Router
+import { UserService } from '../service/user.service';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -30,7 +29,7 @@ export class UserComponent implements OnInit {
   showDialogResgiter = false;
   showDialogUpdate = false;
   showDialogDelete = false;
-  userUpdate!: user;
+  userUpdate!: User;
 
   constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
 
@@ -38,11 +37,11 @@ export class UserComponent implements OnInit {
     this.getUsers();
   }
 
-  showDelete(user: user) {
+  showDelete(user: User) {
     this.showDialogDelete = true;
   }
 
-  showUpdateUser(user: user) {
+  showUpdateUser(user: User) {
     this.showDialogUpdate = true;
     this.userUpdate = user;
   }
@@ -55,7 +54,7 @@ export class UserComponent implements OnInit {
     this.showDialogDelete = false;
   }
 
-  registerUser(user: any) {
+  registerUser(user: User) {
     this.createUser(user);
     this.showDialogResgiter = false;
   }
@@ -65,7 +64,7 @@ export class UserComponent implements OnInit {
     this.showDialogUpdate = false;
   }
 
-  isAtivo(ativo: boolean | string) {
+  isAtivo(ativo: boolean) {
     return ativo ? 'ATIVO' : 'INATIVO';
   }
 
@@ -74,8 +73,8 @@ export class UserComponent implements OnInit {
       next: (res: any) => {
         this.users = res.data;
         this.users.forEach(user => {
-          user.ativo = this.isAtivo(user.ativo)
-        })
+          user.ativo = this.isAtivo(user.ativo) === 'ATIVO';
+        });
       },
       error: (error: any) => {
         console.error('There was an error!', error);

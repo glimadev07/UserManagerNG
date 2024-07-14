@@ -1,7 +1,8 @@
+// src/app/register-form/register-form.component.ts
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { user } from '../../app/app.component';
-import { FormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../app/service/user.service';
+import { User } from '../../app/user/model/user.model';
 
 @Component({
   selector: 'app-register-form',
@@ -11,55 +12,50 @@ import { UserService } from '../../app/service/user.service';
 export class RegisterFormComponent implements OnInit {
 
   @Input() visible = false;
-  @Input() user!: user;
-
+  @Input() user!: User;
 
   @Output() onHide: EventEmitter<void> = new EventEmitter();
-  @Output() confirm: EventEmitter<void> = new EventEmitter();
+  @Output() confirm: EventEmitter<any> = new EventEmitter();
 
+  userForm!: FormGroup;
 
-  userForm!: UntypedFormGroup;
-  isMaster = false;
-  isAtivo = false;
-
-  constructor(private fb: FormBuilder, private userService: UserService) {
-
-  }
+  constructor(private fb: FormBuilder, private userService: UserService) { }
 
   ngOnInit() {
     this.initForm();
-
-  }
-
-  isUptade(){
-    if(this.user){
-      this.userForm.patchValue(this.user)
+    if (this.user) {
+      this.userForm.patchValue(this.user);
     }
   }
 
-  hideModal(){
+  isUpdate() {
+    if (this.user) {
+      this.userForm.patchValue(this.user);
+    }
+  }
+
+  hideModal() {
     this.onHide.emit();
     this.userForm.reset();
   }
 
-  confirmButton(){
-    const objToSend = this.userForm.getRawValue()
-    objToSend.isMaster = this.isMaster
-    objToSend.ativo = this.isAtivo
-    this.confirm.emit(objToSend);
+  confirmButton() {
+    if (this.userForm.valid) {
+      this.confirm.emit(this.userForm.value);
+    }
   }
 
-  private initForm(){
+  private initForm() {
     this.userForm = this.fb.group({
       nome: [''],
       username: [''],
       email: [''],
-      ativo: [this.isAtivo],
       telefone: [''],
       endereco: [''],
       senha: [''],
       confirmarSenha: [''],
-      isMaster: [this.isMaster]
+      isMaster: [false],
+      ativo: [false]
     });
   }
 }
