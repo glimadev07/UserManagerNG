@@ -1,0 +1,40 @@
+.h-screen {
+  height: 100vh;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.w-6 {
+  width: 50%;
+}
+
+.p-error {
+  color: #f44336;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.p-button-rounded {
+  width: 150px;
+  border-radius: 6px;
+}
+
+label {
+  margin-right: 10px;
+}

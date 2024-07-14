@@ -1,4 +1,51 @@
+/* src/app/user/user.component.scss */
+.logout-button-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 
+.h-screen {
+  height: 100vh;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.w-6 {
+  width: 50%;
+}
+
+.p-error {
+  color: #f44336;
+}
+
+.field {
+  margin-bottom: 1rem; /* Adiciona espaço entre os campos */
+}
+
+.text-center {
+  text-align: center;
+}
+
+.p-button-rounded {
+  width: 150px; /* Ajuste a largura do botão */
+}
+
+label {
+  margin-right: 10px; /* Adiciona margem à direita das labels */
+}
+
+/* CSS existente */
 p-card,
 .p-card {
   margin: 0 !important;
@@ -13,7 +60,7 @@ p-card,
 
 .register-button{
   display: flex;
-  justify-content: end;
+  justify-content: flex-start;
   padding-bottom: 20px;
 }
 
@@ -110,5 +157,4 @@ p-card,
     display: flex;
     justify-content: center;
   }
-
 }
