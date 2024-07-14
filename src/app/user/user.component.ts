@@ -88,14 +88,13 @@ export class UserComponent implements OnInit {
     if (this.userToDelete) {
       this.userService.deleteUser(this.userToDelete.id).subscribe({
         next: () => {
-          console.log('Usuário excluído com sucesso');
-          this.notificationService.notify('Usuário excluído com sucesso'); // Notificar sucesso
+          this.notificationService.showSuccess('Usuário excluído com sucesso'); // Notificar sucesso
           this.loadUsers({ first: 0, rows: this.rows }); // Recarregar usuários após exclusão
           this.showDialogDelete = false;
           this.userToDelete = null;
         },
         error: (error: any) => {
-          console.error('Aconteceu um erro!', error);
+          this.notificationService.showError('Usuário excluído com sucesso');
           this.showDialogDelete = false;
         }
       });

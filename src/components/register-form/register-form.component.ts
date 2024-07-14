@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../app/service/user.service';
 import { User } from '../../app/user/model/user.model';
+import { NotificationService } from '../../app/service/notification.service';
 
 @Component({
   selector: 'app-register-form',
@@ -18,7 +19,11 @@ export class RegisterFormComponent implements OnInit {
 
   userForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private userService: UserService) { }
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private notificationService: NotificationService // Injetar o serviço de notificação
+  ) { }
 
   ngOnInit() {
     this.initForm();
@@ -40,7 +45,15 @@ export class RegisterFormComponent implements OnInit {
 
   confirmButton() {
     if (this.userForm.valid) {
-      this.confirm.emit(this.userForm.value);
+      this.userService.createUser(this.userForm.value).subscribe({
+        next: (response) => {
+          this.notificationService.showSuccess('Usuário criado com sucesso!');
+          this.confirm.emit(this.userForm.value);
+        },
+        error: (error) => {
+          this.notificationService.showError('Erro ao criar usuário!');
+        }
+      });
     }
   }
 
@@ -51,18 +64,20 @@ export class RegisterFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
       telefone: ['', Validators.maxLength(15)],
       endereco: ['', Validators.maxLength(255)],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
+      senha: ['', Validators.required],
       confirmarSenha: ['', Validators.required],
       isMaster: [false],
       ativo: [false]
-    }, {
-      validators: this.passwordMatchValidator
-    });
+    }, { validators: this.passwordMatchValidator });
   }
 
-  private passwordMatchValidator(group: FormGroup) {
-    const senha = group.get('senha')?.value;
-    const confirmarSenha = group.get('confirmarSenha')?.value;
-    return senha === confirmarSenha ? null : { notMatching: true };
+  private passwordMatchValidator(form: FormGroup) {
+    const password = form.controls['senha'];
+    const confirmPassword = form.controls['confirmarSenha'];
+    if (password.value !== confirmPassword.value) {
+      confirmPassword.setErrors({ notMatching: true });
+    } else {
+      confirmPassword.setErrors(null);
+    }
   }
 }

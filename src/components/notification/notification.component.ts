@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from '../../app/service/notification.service';
+import { NotificationService, Notification } from '../../app/service/notification.service';
 
 @Component({
   selector: 'app-notification',
@@ -9,13 +9,18 @@ import { NotificationService } from '../../app/service/notification.service';
 export class NotificationComponent implements OnInit {
 
   message: string | null = null;
+  type: 'success' | 'error' | null = null;
 
   constructor(private notificationService: NotificationService) { }
 
-  ngOnInit(): void {
-    this.notificationService.notifications$.subscribe(message => {
-      this.message = message;
-      setTimeout(() => this.message = null, 3000);
+  ngOnInit() {
+    this.notificationService.notifications$.subscribe((notification: Notification) => {
+      this.message = notification.message;
+      this.type = notification.type;
+      setTimeout(() => {
+        this.message = null;
+        this.type = null;
+      }, 3000);
     });
   }
 }
