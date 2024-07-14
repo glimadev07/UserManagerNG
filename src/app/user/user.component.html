@@ -1,7 +1,11 @@
+<!-- src/app/user/user.component.html -->
+<div class="logout-button-container">
+  <p-button (onClick)="logout()" label="SAIR" class="p-button-danger"></p-button>
+</div>
+
 <p-card>
   <div class="confirm-button register-button">
     <p-button (onClick)="showRegisterUser()" label="Cadastrar"></p-button>
-    <p-button (onClick)="logout()" label="Logout"></p-button> <!-- Botão de Logout -->
   </div>
   <p-table
     [columns]="cols"
@@ -18,18 +22,13 @@
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <td *ngFor="let col of columns">
-          <span *ngIf="col.field !== 'operacoes'">{{
-            rowData[col.field]
-          }}</span>
+          <span *ngIf="col.field !== 'operacoes'">{{ rowData[col.field] }}</span>
           <span *ngIf="col.field == 'operacoes'" class="operation-buttons">
             <div class="table-button" style="padding-right: 10px">
               <p-button (onClick)="showDelete(rowData)" icon="pi pi-trash"></p-button>
             </div>
             <div class="table-button">
-              <p-button
-                (onClick)="showUpdateUser(rowData)"
-                icon="pi pi-user-edit"
-              ></p-button>
+              <p-button (onClick)="showUpdateUser(rowData)" icon="pi pi-user-edit"></p-button>
             </div>
           </span>
         </td>
