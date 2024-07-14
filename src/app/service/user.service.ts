@@ -50,4 +50,11 @@ export class UserService {
     }
     return throwError(() => new Error(errorMessage));
   }
+
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${USERS}/${id}`).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 }

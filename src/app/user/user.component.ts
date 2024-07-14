@@ -4,7 +4,7 @@ import { User } from './model/user.model';
 import { UserService } from '../service/user.service';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/api'; // Importando o tipo correto
+import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
   selector: 'app-user',
@@ -28,6 +28,7 @@ export class UserComponent implements OnInit {
 
   rows = 10;
   totalRecords = 0;
+  userToDelete: User | null = null;
 
   showDialogResgiter = false;
   showDialogUpdate = false;
@@ -41,20 +42,14 @@ export class UserComponent implements OnInit {
   }
 
   paginate(event: any) {
-    const first = event.first ?? 0;
-    const rows = event.rows ?? this.rows;
-    const page = first / rows;
-
-    this.userService.getUsers(page, rows).subscribe({
+    if (event.rows === undefined) {
+      event.rows = this.rows;
+    }
+    const page = event.first! / event.rows!;
+    this.userService.getUsers(page, event.rows!).subscribe({
       next: (res: any) => {
         this.users = res.data;
         this.totalRecords = res.totalRecords;
-        if (!Array.isArray(this.users)) {
-          this.users = [];
-        }
-        this.users.forEach(user => {
-          user.ativo = this.isAtivo(user.ativo);
-        });
       },
       error: (error: any) => {
         console.error('There was an error!', error);
@@ -62,34 +57,42 @@ export class UserComponent implements OnInit {
     });
   }
 
-  loadUsers(event: { first: number, rows: number }) {
-    const first = event.first ?? 0;
-    const rows = event.rows ?? this.rows;
-    const page = first / rows;
-
-    this.userService.getUsers(page, rows).subscribe({
+  loadUsers(event: LazyLoadEvent) {
+    if (event.rows === undefined) {
+      event.rows = this.rows;
+    }
+    const page = event.first! / event.rows!;
+    this.userService.getUsers(page, event.rows!).subscribe({
       next: (res: any) => {
         this.users = res.data;
         this.totalRecords = res.totalRecords;
-        if (!Array.isArray(this.users)) {
-          this.users = [];
-        }
-        this.users.forEach(user => {
-          user.ativo = this.isAtivo(user.ativo);
-        });
       },
       error: (error: any) => {
         console.error('There was an error!', error);
       }
     });
-  }
-
-  getAtivoText(ativo: boolean): string {
-    return ativo ? 'Ativo' : 'Inativo';
   }
 
   showDelete(user: User) {
+    this.userToDelete = user;
     this.showDialogDelete = true;
+  }
+
+  confirmDelete() {
+    if (this.userToDelete) {
+      this.userService.deleteUser(this.userToDelete.id).subscribe({
+        next: () => {
+          console.log('Usuário excluído com sucesso');
+          this.loadUsers({ first: 0, rows: this.rows }); // Recarregar usuários após exclusão
+          this.showDialogDelete = false;
+          this.userToDelete = null;
+        },
+        error: (error: any) => {
+          console.error('Aconteceu um erro!', error);
+          this.showDialogDelete = false;
+        }
+      });
+    }
   }
 
   showUpdateUser(user: User) {
@@ -115,8 +118,8 @@ export class UserComponent implements OnInit {
     this.showDialogUpdate = false;
   }
 
-  isAtivo(ativo: boolean | string): boolean {
-    return ativo === true || ativo === 'true';
+  getAtivoText(ativo: boolean): string {
+    return ativo ? 'Ativo' : 'Inativo';
   }
 
   createUser(user: User) {
