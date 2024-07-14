@@ -84,6 +84,10 @@ export class UserComponent implements OnInit {
     });
   }
 
+  getAtivoText(ativo: boolean): string {
+    return ativo ? 'Ativo' : 'Inativo';
+  }
+
   showDelete(user: User) {
     this.showDialogDelete = true;
   }
