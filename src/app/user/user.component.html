@@ -10,6 +10,11 @@
   <p-table
     [columns]="cols"
     [value]="users"
+    [paginator]="true"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    [lazy]="true"
+    (onLazyLoad)="paginate($event)"
     [tableStyle]="{ 'min-width': '50rem' }"
   >
     <ng-template pTemplate="header" let-columns>
@@ -35,6 +40,15 @@
       </tr>
     </ng-template>
   </p-table>
+  <div class="total-records">
+    Total de Registros: {{ totalRecords }}
+  </div>
+  <p-paginator
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    (onPageChange)="paginate($event)">
+  </p-paginator>
 </p-card>
 
 <app-register-form

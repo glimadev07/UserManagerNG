@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { User } from '../user/model/user.model';
@@ -12,16 +12,22 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${USERS}`).pipe(
-      map((response: User[]) => {
-        return response.map(user => {
-          return {
+  getUsers(page: number, size: number): Observable<{ data: User[], totalRecords: number }> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<{ data: { data: User[], totalRecords: number } }>(`${USERS}`, { params }).pipe(
+      map(response => {
+        const innerData = response.data;
+        return {
+          data: innerData.data.map(user => ({
             ...user,
-            isMaster: !!user.isMaster,
-            ativo: !!user.ativo
-          };
-        });
+            isMaster: !!user.isMaster, // Garantir que isMaster é booleano
+            ativo: !!user.ativo // Garantir que ativo é booleano
+          })),
+          totalRecords: innerData.totalRecords
+        };
       }),
       catchError(this.handleError)
     );
@@ -34,10 +40,12 @@ export class UserService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = 'Um Erro desconhecido ocorreu!';
+    let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
+      // Erro no lado do cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
+      // Erro no lado do servidor
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(() => new Error(errorMessage));

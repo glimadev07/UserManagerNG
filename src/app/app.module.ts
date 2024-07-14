@@ -19,6 +19,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { provideHttpClient, withFetch, HttpClientModule } from '@angular/common/http';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { provideHttpClient, withFetch, HttpClientModule } from '@angular/common/
     InputTextModule,
     HttpClientModule,
     CheckboxModule,
-    FormsModule
+    FormsModule,
+    PaginatorModule
 
   ],
   providers: [

@@ -4,6 +4,7 @@ import { User } from './model/user.model';
 import { UserService } from '../service/user.service';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/api'; // Importando o tipo correto
 
 @Component({
   selector: 'app-user',
@@ -14,8 +15,7 @@ export class UserComponent implements OnInit {
 
   title = 'UserManagerNG';
 
-  users!: User[]
-
+  users: User[] = [];
   cols: Column[] = [
     { field: 'nome', header: 'NOME' },
     { field: 'username', header: 'USERNAME' },
@@ -26,6 +26,9 @@ export class UserComponent implements OnInit {
     { field: 'operacoes', header: 'OPERAÇÕES' }
   ];
 
+  rows = 10;
+  totalRecords = 0;
+
   showDialogResgiter = false;
   showDialogUpdate = false;
   showDialogDelete = false;
@@ -34,7 +37,51 @@ export class UserComponent implements OnInit {
   constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-    this.getUsers();
+    this.loadUsers({ first: 0, rows: this.rows });
+  }
+
+  paginate(event: LazyLoadEvent) {
+    const first = event.first ?? 0;
+    const rows = event.rows ?? this.rows;
+    const page = first / rows;
+
+    this.userService.getUsers(page, rows).subscribe({
+      next: (res: any) => {
+        this.users = res.data;
+        this.totalRecords = res.totalRecords;
+        if (!Array.isArray(this.users)) {
+          this.users = [];
+        }
+        this.users.forEach(user => {
+          user.ativo = this.isAtivo(user.ativo);
+        });
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      }
+    });
+  }
+
+  loadUsers(event: { first: number, rows: number }) {
+    const first = event.first ?? 0;
+    const rows = event.rows ?? this.rows;
+    const page = first / rows;
+
+    this.userService.getUsers(page, rows).subscribe({
+      next: (res: any) => {
+        this.users = res.data;
+        this.totalRecords = res.totalRecords;
+        if (!Array.isArray(this.users)) {
+          this.users = [];
+        }
+        this.users.forEach(user => {
+          user.ativo = this.isAtivo(user.ativo);
+        });
+      },
+      error: (error: any) => {
+        console.error('There was an error!', error);
+      }
+    });
   }
 
   showDelete(user: User) {
@@ -54,7 +101,7 @@ export class UserComponent implements OnInit {
     this.showDialogDelete = false;
   }
 
-  registerUser(user: User) {
+  registerUser(user: any) {
     this.createUser(user);
     this.showDialogResgiter = false;
   }
@@ -64,28 +111,15 @@ export class UserComponent implements OnInit {
     this.showDialogUpdate = false;
   }
 
-  isAtivo(ativo: boolean) {
-    return ativo ? 'ATIVO' : 'INATIVO';
-  }
-
-  getUsers() {
-    this.userService.getUsers().subscribe({
-      next: (res: any) => {
-        this.users = res.data;
-        this.users.forEach(user => {
-          user.ativo = this.isAtivo(user.ativo) === 'ATIVO';
-        });
-      },
-      error: (error: any) => {
-        console.error('There was an error!', error);
-      }
-    });
+  isAtivo(ativo: boolean | string): boolean {
+    return ativo === true || ativo === 'true';
   }
 
   createUser(user: User) {
     this.userService.createUser(user).subscribe({
       next: (response: any) => {
         console.log('Usuário criado com sucesso:', response);
+        this.loadUsers({ first: 0, rows: this.rows }); // Recarregar usuários após criar
       },
       error: (error: any) => {
         console.error('Aconteceu um erro!', error);
