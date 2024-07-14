@@ -1,34 +1,57 @@
-<!-- src/app/register-form/register-form.component.html -->
 <p-dialog [header]="user ? 'ATUALIZAR USUÁRIO' : 'CRIAR USUÁRIO'" [modal]="true" [(visible)]="visible" [style]="{ width: '600px', height: '500px' }"
 [draggable]="false" [resizable]="false" (onHide)="hideModal()" (onShow)="isUpdate()">
 <form [formGroup]="userForm" class="p-fluid grid formgrid">
   <div class="field col-12 md:col-6">
     <label for="nome">Nome:</label>
     <input id="nome" type="text" pInputText formControlName="nome" />
+    <div *ngIf="userForm.controls['nome'].invalid && userForm.controls['nome'].touched" class="p-error">
+      Nome é obrigatório e deve ter no máximo 100 caracteres.
+    </div>
   </div>
   <div class="field col-12 md:col-6">
     <label for="username">Username:</label>
     <input id="username" type="text" pInputText formControlName="username" />
+    <div *ngIf="userForm.controls['username'].invalid && userForm.controls['username'].touched" class="p-error">
+      Username é obrigatório e deve ter no máximo 50 caracteres.
+    </div>
   </div>
   <div class="field col-12 md:col-6">
     <label for="telefone">Contato:</label>
     <input id="telefone" type="text" pInputText formControlName="telefone" />
+    <div *ngIf="userForm.controls['telefone'].invalid && userForm.controls['telefone'].touched" class="p-error">
+      Telefone deve ter no máximo 15 caracteres.
+    </div>
   </div>
   <div class="field col-12 md:col-6">
     <label for="endereco">Endereço:</label>
     <input id="endereco" type="text" pInputText formControlName="endereco" />
+    <div *ngIf="userForm.controls['endereco'].invalid && userForm.controls['endereco'].touched" class="p-error">
+      Endereço deve ter no máximo 255 caracteres.
+    </div>
   </div>
   <div class="field col-12 md:col-6" *ngIf="!user">
     <label for="senha">Senha:</label>
     <input id="senha" type="password" pInputText formControlName="senha" />
+    <div *ngIf="userForm.controls['senha'].invalid && userForm.controls['senha'].touched" class="p-error">
+      Senha é obrigatória e deve ter no mínimo 6 caracteres.
+    </div>
   </div>
   <div class="field col-12 md:col-6" *ngIf="!user">
     <label for="confirmarSenha">Confirmar Senha:</label>
     <input id="confirmarSenha" type="password" pInputText formControlName="confirmarSenha" />
+    <div *ngIf="userForm.controls['confirmarSenha'].invalid && userForm.controls['confirmarSenha'].touched" class="p-error">
+      Confirmação de senha é obrigatória e deve coincidir com a senha.
+    </div>
+    <div *ngIf="userForm.hasError('notMatching')" class="p-error">
+      Senhas não coincidem.
+    </div>
   </div>
   <div class="field col-12">
     <label for="email">Email:</label>
     <input id="email" type="text" pInputText formControlName="email" />
+    <div *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched" class="p-error">
+      Email é obrigatório e deve ser um email válido com no máximo 100 caracteres.
+    </div>
   </div>
   <div class="field col-12">
     <p-checkbox formControlName="isMaster" [binary]="true" label="Administrador"></p-checkbox>
@@ -40,7 +63,7 @@
 <ng-template pTemplate="footer">
   <div class="button-footer">
     <div class="confirm-button">
-      <p-button label="Salvar" (onClick)="confirmButton()" [outlined]="true"></p-button>
+      <p-button label="Salvar" (onClick)="confirmButton()" [outlined]="true" [disabled]="userForm.invalid"></p-button>
     </div>
     <div>
       <p-button label="Cancelar" (onClick)="visible = false"></p-button>

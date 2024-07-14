@@ -1,6 +1,5 @@
-// src/app/register-form/register-form.component.ts
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../app/service/user.service';
 import { User } from '../../app/user/model/user.model';
 
@@ -47,15 +46,23 @@ export class RegisterFormComponent implements OnInit {
 
   private initForm() {
     this.userForm = this.fb.group({
-      nome: [''],
-      username: [''],
-      email: [''],
-      telefone: [''],
-      endereco: [''],
-      senha: [''],
-      confirmarSenha: [''],
+      nome: ['', [Validators.required, Validators.maxLength(100)]],
+      username: ['', [Validators.required, Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
+      telefone: ['', Validators.maxLength(15)],
+      endereco: ['', Validators.maxLength(255)],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
+      confirmarSenha: ['', Validators.required],
       isMaster: [false],
       ativo: [false]
+    }, {
+      validators: this.passwordMatchValidator
     });
+  }
+
+  private passwordMatchValidator(group: FormGroup) {
+    const senha = group.get('senha')?.value;
+    const confirmarSenha = group.get('confirmarSenha')?.value;
+    return senha === confirmarSenha ? null : { notMatching: true };
   }
 }
