@@ -40,7 +40,7 @@ export class UserComponent implements OnInit {
     this.loadUsers({ first: 0, rows: this.rows });
   }
 
-  paginate(event: LazyLoadEvent) {
+  paginate(event: any) {
     const first = event.first ?? 0;
     const rows = event.rows ?? this.rows;
     const page = first / rows;

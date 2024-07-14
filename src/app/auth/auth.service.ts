@@ -1,4 +1,3 @@
-// src/app/auth/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -16,18 +15,36 @@ export class AuthService {
     return this.http.post<any>(`${USERS}/login`, { username, senha })
       .pipe(map(response => {
         if (response && response.data) {
-          localStorage.setItem('currentUser', JSON.stringify(response.data));
+          if (this.isLocalStorageAvailable()) {
+            localStorage.setItem('currentUser', JSON.stringify(response.data));
+          }
         }
         return response;
       }));
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
+    if (this.isLocalStorageAvailable()) {
+      localStorage.removeItem('currentUser');
+    }
   }
 
   public get currentUserValue(): any {
-    const currentUser = localStorage.getItem('currentUser');
-    return currentUser ? JSON.parse(currentUser) : null;
+    if (this.isLocalStorageAvailable()) {
+      const currentUser = localStorage.getItem('currentUser');
+      return currentUser ? JSON.parse(currentUser) : null;
+    }
+    return null;
+  }
+
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const test = '__test__';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
