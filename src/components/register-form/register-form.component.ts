@@ -20,6 +20,7 @@ export class RegisterFormComponent implements OnInit {
 
   userForm!: UntypedFormGroup;
   isMaster = false;
+  isAtivo = false;
 
   constructor(private fb: FormBuilder, private userService: UserService) {
 
@@ -44,6 +45,7 @@ export class RegisterFormComponent implements OnInit {
   confirmButton(){
     const objToSend = this.userForm.getRawValue()
     objToSend.isMaster = this.isMaster
+    objToSend.ativo = this.isAtivo
     this.confirm.emit(objToSend);
   }
 
@@ -52,7 +54,7 @@ export class RegisterFormComponent implements OnInit {
       nome: [''],
       username: [''],
       email: [''],
-      ativo: [''],
+      ativo: [this.isAtivo],
       telefone: [''],
       endereco: [''],
       senha: [''],
