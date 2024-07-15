@@ -37,4 +37,19 @@
 
 label {
   margin-right: 10px;
+  display: block;
+}
+
+.p-mb-3 {
+  margin-bottom: 1rem;
+}
+
+.p-d-block {
+  display: block;
+}
+
+.p-fluid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
