@@ -1,4 +1,4 @@
-<p-dialog [header]="user ? 'ATUALIZAR USUÁRIO' : 'CRIAR USUÁRIO'" [modal]="true" [(visible)]="visible" [style]="{ width: '600px', height: '500px' }"
+<p-dialog [header]="user ? 'ATUALIZAR USUÁRIO' : 'CRIAR USUÁRIO'" [modal]="true" [(visible)]="visible"
 [draggable]="false" [resizable]="false" (onHide)="hideModal()" (onShow)="isUpdate()">
 <form [formGroup]="userForm" class="p-fluid grid formgrid">
   <div class="field col-12 md:col-6">
@@ -56,15 +56,20 @@
       <div *ngIf="userForm.controls['email'].errors?.['maxlength']">Email pode ter no máximo 100 caracteres</div>
     </div>
   </div>
-  <div class="field col-12">
-    <p-checkbox formControlName="isMaster" [binary]="true" label="Administrador"></p-checkbox>
-  </div>
-  <div class="field col-12">
-    <p-checkbox formControlName="ativo" [binary]="true" label="Ativo"></p-checkbox>
+  <div style="display: flex;">
+    <div class="field col-12 md:col-12">
+      <label for="email">Status:</label>
+      <p-checkbox formControlName="ativo" [binary]="true" label="Ativo"></p-checkbox>
+    </div>
+    <div class="field col-12 md:col-12">
+      <label for="email">Nível:</label>
+      <p-checkbox formControlName="isMaster" [binary]="true" label="Administrador"></p-checkbox>
+    </div>
   </div>
 </form>
 <ng-template pTemplate="footer">
-  <div class="button-footer">
+  <div class="button-footer" style="display: flex;
+    justify-content: center;">
     <div class="confirm-button">
       <p-button label="Salvar" (onClick)="confirmButton()" [disabled]="!userForm.valid" [outlined]="true"></p-button>
     </div>

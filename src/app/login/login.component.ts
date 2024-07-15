@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { User } from '../user/model/user.model';
+import { UserService } from '../service/user.service';
+import { NotificationService } from '../service/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -15,13 +18,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   loading = false;
   submitted = false;
   error = '';
+  showRegisterForm = false;
 
   private subscriptions: Subscription[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService,
+    private notificationService: NotificationService
   ) {
     if (this.authService.currentUserValue) {
       this.router.navigate(['/user']);
@@ -61,4 +67,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
     this.subscriptions.push(sub);
   }
+
+  openRegisterForm() {
+    this.showRegisterForm = true;
+  }
+
+  closeRegisterForm() {
+    this.showRegisterForm = false;
+  }
+
+
 }

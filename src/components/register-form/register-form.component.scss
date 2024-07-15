@@ -25,3 +25,9 @@ form {
 button {
   width: 100%;
 }
+::ng-deep{
+  .p-checkbox-box.p-highlight {
+    display: none !important;
+  }
+
+}
