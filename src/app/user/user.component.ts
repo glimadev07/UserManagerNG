@@ -88,8 +88,8 @@ export class UserComponent implements OnInit {
     if (this.userToDelete) {
       this.userService.deleteUser(this.userToDelete.id).subscribe({
         next: () => {
-          this.notificationService.showSuccess('Usuário excluído com sucesso'); // Notificar sucesso
-          this.loadUsers({ first: 0, rows: this.rows }); // Recarregar usuários após exclusão
+          this.notificationService.showSuccess('Usuário excluído com sucesso');
+          this.loadUsers({ first: 0, rows: this.rows });
           this.showDialogDelete = false;
           this.userToDelete = null;
         },
@@ -114,14 +114,18 @@ export class UserComponent implements OnInit {
     this.showDialogDelete = false;
   }
 
-  registerUser(user: any) {
-    this.createUser(user);
+  registerUser(user: User) {
+    this.users.unshift(user);
+    this.totalRecords += 1;
     this.showDialogResgiter = false;
+    this.loadUsers({ first: 0, rows: this.rows });
   }
+
 
   updateUser(event: any) {
     console.log(event);
     this.showDialogUpdate = false;
+    this.loadUsers({ first: 0, rows: this.rows });
   }
 
   getAtivoText(ativo: boolean): string {
@@ -132,7 +136,7 @@ export class UserComponent implements OnInit {
     this.userService.createUser(user).subscribe({
       next: (response: any) => {
         console.log('Usuário criado com sucesso:', response);
-        this.loadUsers({ first: 0, rows: this.rows }); // Recarregar usuários após criar
+        this.loadUsers({ first: 0, rows: this.rows });
       },
       error: (error: any) => {
         console.error('Aconteceu um erro!', error);

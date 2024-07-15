@@ -56,12 +56,14 @@
   (onHide)="showDialogResgiter = false"
   (confirm)="registerUser($event)"
 ></app-register-form>
+
 <app-register-form
   [visible]="showDialogUpdate"
   (onHide)="showDialogUpdate = false"
   (confirm)="updateUser($event)"
   [user]="userUpdate"
 ></app-register-form>
+
 <app-confirm-delete
   [visible]="showDialogDelete"
   (onHide)="showDialogDelete = false"

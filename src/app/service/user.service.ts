@@ -23,8 +23,8 @@ export class UserService {
         return {
           data: innerData.data.map(user => ({
             ...user,
-            isMaster: !!user.isMaster, // Garantir que isMaster é booleano
-            ativo: !!user.ativo // Garantir que ativo é booleano
+            isMaster: !!user.isMaster,
+            ativo: !!user.ativo
           })),
           totalRecords: innerData.totalRecords
         };
@@ -39,13 +39,17 @@ export class UserService {
     );
   }
 
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(`${USERS}/${user.id}`, user).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
-      // Erro no lado do cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Erro no lado do servidor
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(() => new Error(errorMessage));

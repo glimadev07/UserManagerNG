@@ -35,6 +35,7 @@ export class RegisterFormComponent implements OnInit {
   isUpdate() {
     if (this.user) {
       this.userForm.patchValue(this.user);
+      this.userForm.controls["confirmarSenha"].setValue(this.userForm.controls["senha"].value)
     }
   }
 
@@ -45,16 +46,40 @@ export class RegisterFormComponent implements OnInit {
 
   confirmButton() {
     if (this.userForm.valid) {
-      this.userService.createUser(this.userForm.value).subscribe({
-        next: (response) => {
-          this.notificationService.showSuccess('Usuário criado com sucesso!');
-          this.confirm.emit(this.userForm.value);
-        },
-        error: (error) => {
-          this.notificationService.showError('Erro ao criar usuário!');
-        }
-      });
+      const user = this.userForm.value;
+      if (this.user) {
+        this.updateUser(user)
+      } else {
+        this.createUser(user)
+      }
     }
+  }
+
+  private createUser(user: User){
+    this.userService.createUser(user).subscribe({
+      next: (response) => {
+        this.notificationService.showSuccess('Usuário cadastrado com sucesso');
+        this.confirm.emit(response);
+        this.hideModal();
+      },
+      error: (error) => {
+        this.notificationService.showError('Erro ao cadastrar usuário');
+      }
+    });
+  }
+
+  private updateUser(user: User){
+    user.id = this.user.id
+    this.userService.createUser(user).subscribe({
+      next: (response) => {
+        this.notificationService.showSuccess('Usuário atualizado com sucesso');
+        this.confirm.emit(response);
+        this.hideModal();
+      },
+      error: (error) => {
+        this.notificationService.showError('Erro ao cadastrar usuário');
+      }
+    });
   }
 
   private initForm() {
