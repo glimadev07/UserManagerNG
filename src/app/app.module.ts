@@ -20,7 +20,7 @@ import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { provideHttpClient, withFetch, HttpClientModule } from '@angular/common/http';
 import { PaginatorModule } from 'primeng/paginator';
-
+import { SplitButtonModule } from 'primeng/splitbutton';
 import { NotificationComponent } from '../components/notification/notification.component'; // Adicione esta linha
 
 @NgModule({
@@ -45,7 +45,8 @@ import { NotificationComponent } from '../components/notification/notification.c
     HttpClientModule,
     CheckboxModule,
     FormsModule,
-    PaginatorModule
+    PaginatorModule,
+    SplitButtonModule
   ],
   providers: [
     provideClientHydration(),

@@ -4,7 +4,7 @@ import { User } from './model/user.model';
 import { UserService } from '../service/user.service';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent, MenuItem } from 'primeng/api';
 import { NotificationService } from '../service/notification.service';
 import { Subscription } from 'rxjs';
 
@@ -39,6 +39,8 @@ export class UserComponent implements OnInit, OnDestroy {
   showDialogUpdate = false;
   showDialogDelete = false;
   userUpdate!: User;
+  items!: MenuItem[];
+  username!: string;
 
   constructor(
     private userService: UserService,
@@ -48,6 +50,10 @@ export class UserComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.username = this.authService.getCurrentUser().username;
+    this.items = [
+      { label: 'Logout', icon: 'pi pi-sign-out', command: () => this.logout() }
+    ];
     this.loadUsers({ first: 0, rows: this.rows });
   }
 
@@ -157,5 +163,9 @@ export class UserComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  handleButtonClick() {
+    // Lógica adicional para quando o botão principal é clicado (se necessário)
   }
 }

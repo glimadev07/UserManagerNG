@@ -1,7 +1,8 @@
 <!-- src/app/user/user.component.html -->
 <div class="logout-button-container">
-  <p-button (onClick)="logout()" label="SAIR" class="p-button-danger"></p-button>
+  <p-splitButton [label]="username" icon="pi pi-user" (onClick)="handleButtonClick()" [model]="items"></p-splitButton>
 </div>
+
 
 <p-card>
   <div class="confirm-button register-button">
