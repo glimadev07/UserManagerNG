@@ -23,9 +23,18 @@ export class AuthService {
       }));
   }
 
+  isAuthenticated(): boolean {
+    if (typeof window !== 'undefined') {
+      return !!localStorage.getItem('currentUser');
+    }
+    return false;
+  }
+
   logout(): void {
-    if (this.isLocalStorageAvailable()) {
-      localStorage.removeItem('currentUser');
+    if (typeof window !== 'undefined') {
+      if (this.isLocalStorageAvailable()) {
+        localStorage.removeItem('currentUser');
+      }
     }
   }
 
