@@ -1,15 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../app/service/user.service';
 import { User } from '../../app/user/model/user.model';
 import { NotificationService } from '../../app/service/notification.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
   styleUrls: ['./register-form.component.scss']
 })
-export class RegisterFormComponent implements OnInit {
+export class RegisterFormComponent implements OnInit, OnDestroy {
 
   @Input() visible = false;
   @Input() user!: User;
@@ -19,10 +20,12 @@ export class RegisterFormComponent implements OnInit {
 
   userForm!: FormGroup;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private notificationService: NotificationService // Injetar o serviço de notificação
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -30,6 +33,10 @@ export class RegisterFormComponent implements OnInit {
     if (this.user) {
       this.userForm.patchValue(this.user);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   isUpdate() {
@@ -70,7 +77,7 @@ export class RegisterFormComponent implements OnInit {
 
   private updateUser(user: User){
     user.id = this.user.id
-    this.userService.createUser(user).subscribe({
+    const sub = this.userService.createUser(user).subscribe({
       next: (response) => {
         this.notificationService.showSuccess('Usuário atualizado com sucesso');
         this.confirm.emit(response);
@@ -80,6 +87,7 @@ export class RegisterFormComponent implements OnInit {
         this.notificationService.showError('Erro ao cadastrar usuário');
       }
     });
+    this.subscriptions.push(sub);
   }
 
   private initForm() {

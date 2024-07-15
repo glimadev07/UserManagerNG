@@ -1,19 +1,22 @@
 // src/app/login/login.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm!: FormGroup;
   loading = false;
   submitted = false;
   error = '';
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,6 +35,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
   get f() { return this.loginForm.controls; }
 
   onSubmit() {
@@ -42,14 +49,16 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authService.login(this.f['username'].value, this.f['senha'].value)
+    const sub = this.authService.login(this.f['username'].value, this.f['senha'].value)
       .subscribe({
-        next: (data) => {
+        next: () => {
           this.router.navigate(['/user']);
         },
         error: (error) => {
           this.error = error.error.error.error;
           this.loading = false;
-        }});
+        }
+      });
+    this.subscriptions.push(sub);
   }
 }

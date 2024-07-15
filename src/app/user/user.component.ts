@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Column } from './model/Column.model';
 import { User } from './model/user.model';
 import { UserService } from '../service/user.service';
@@ -6,17 +6,21 @@ import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/api';
 import { NotificationService } from '../service/notification.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
 
   title = 'UserManagerNG';
 
+  private subscriptions: Subscription[] = [];
+
   users: User[] = [];
+
   cols: Column[] = [
     { field: 'nome', header: 'NOME' },
     { field: 'username', header: 'USERNAME' },
@@ -47,20 +51,25 @@ export class UserComponent implements OnInit {
     this.loadUsers({ first: 0, rows: this.rows });
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
   paginate(event: any) {
     if (event.rows === undefined) {
       event.rows = this.rows;
     }
     const page = event.first! / event.rows!;
-    this.userService.getUsers(page, event.rows!).subscribe({
+    const sub = this.userService.getUsers(page, event.rows!).subscribe({
       next: (res: any) => {
         this.users = res.data;
         this.totalRecords = res.totalRecords;
       },
       error: (error: any) => {
-        console.error('There was an error!', error);
+        console.error('Aconteceu um erro!', error);
       }
     });
+    this.subscriptions.push(sub);
   }
 
   loadUsers(event: LazyLoadEvent) {
@@ -68,15 +77,16 @@ export class UserComponent implements OnInit {
       event.rows = this.rows;
     }
     const page = event.first! / event.rows!;
-    this.userService.getUsers(page, event.rows!).subscribe({
+    const sub = this.userService.getUsers(page, event.rows!).subscribe({
       next: (res: any) => {
         this.users = res.data;
         this.totalRecords = res.totalRecords;
       },
       error: (error: any) => {
-        console.error('There was an error!', error);
+        console.error('Aconteceu um erro!', error);
       }
     });
+    this.subscriptions.push(sub);
   }
 
   showDelete(user: User) {
@@ -86,7 +96,7 @@ export class UserComponent implements OnInit {
 
   confirmDelete() {
     if (this.userToDelete) {
-      this.userService.deleteUser(this.userToDelete.id).subscribe({
+      const sub = this.userService.deleteUser(this.userToDelete.id).subscribe({
         next: () => {
           this.notificationService.showSuccess('Usuário excluído com sucesso');
           this.loadUsers({ first: 0, rows: this.rows });
@@ -94,10 +104,11 @@ export class UserComponent implements OnInit {
           this.userToDelete = null;
         },
         error: (error: any) => {
-          this.notificationService.showError('Usuário excluído com sucesso');
+          this.notificationService.showError('Erro ao excluir o usuário');
           this.showDialogDelete = false;
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 
@@ -121,9 +132,7 @@ export class UserComponent implements OnInit {
     this.loadUsers({ first: 0, rows: this.rows });
   }
 
-
   updateUser(event: any) {
-    console.log(event);
     this.showDialogUpdate = false;
     this.loadUsers({ first: 0, rows: this.rows });
   }
@@ -133,7 +142,7 @@ export class UserComponent implements OnInit {
   }
 
   createUser(user: User) {
-    this.userService.createUser(user).subscribe({
+    const sub = this.userService.createUser(user).subscribe({
       next: (response: any) => {
         console.log('Usuário criado com sucesso:', response);
         this.loadUsers({ first: 0, rows: this.rows });
@@ -142,6 +151,7 @@ export class UserComponent implements OnInit {
         console.error('Aconteceu um erro!', error);
       }
     });
+    this.subscriptions.push(sub);
   }
 
   logout() {
